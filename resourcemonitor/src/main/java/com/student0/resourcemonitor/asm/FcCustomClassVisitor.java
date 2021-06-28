@@ -36,7 +36,9 @@ public class FcCustomClassVisitor extends BaseMMClassVisitor {
     }
 
     public FcCustomClassVisitor setClassName(String className) {
-        mCustomResourceType = className.replace(".", "/");
+        if (className != null) {
+            mCustomResourceType = className.replace(".", "/");
+        }
         return this;
     }
 
