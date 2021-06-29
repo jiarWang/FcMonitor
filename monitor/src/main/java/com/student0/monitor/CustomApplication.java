@@ -1,7 +1,6 @@
-package com.student0.www;
+package com.student0.monitor;
 
 import android.app.Application;
-
 /**
  * @createDate: 6/28/21
  * @author: 飞彻
