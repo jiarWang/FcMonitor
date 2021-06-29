@@ -44,13 +44,16 @@ public class FcComponentReadAction implements Action<Project> {
             String variantName = capitalize(variantScope.getFullVariantName());
             if (variantName.toLowerCase().contains("test")) continue;
 
-            final FileCollection files = project.getTasks().findByName("process" + variantName + "Manifest").getOutputs().getFiles();
-            project.getTasks().findByName("compile" + variantName + "JavaWithJavac").doFirst(new Action<Task>() {
+            //此步生成.ap_
+            Task processResources = project.getTasks().findByName("process" + variantName + "Resources");
+
+            processResources.doFirst(new Action<Task>() {
                 @Override
                 public void execute(Task task) {
-                    for (File file : files) {
+                    for (File file : task.getInputs().getFiles()) {
                         String manifest = file.getPath() + "/AndroidManifest.xml";
                         File manifestFile = new File(manifest);
+                        if (!file.getPath().contains("/merged_manifests/")) continue;
                         if (!manifestFile.exists()) continue;
                         NodeManager.Instance.setAllContext(modifyXMLByJDOM(manifestFile));
                     }
