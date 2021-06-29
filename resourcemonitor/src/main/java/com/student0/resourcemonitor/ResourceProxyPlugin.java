@@ -10,7 +10,10 @@ import com.student0.resourcemonitor.transform.FcGetResourceTransform;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
+
 public class ResourceProxyPlugin implements Plugin<Project> {
+    public final static String DEFAULT_APPLICATION = "com.student0.monitor.CustomApplication";
+    public final static String DEFAULT_PROXY_RESOURCE = "com.student0.monitor.ResourceMonitor";
 
     private TaskFactory mTaskFactory;
 
@@ -20,7 +23,7 @@ public class ResourceProxyPlugin implements Plugin<Project> {
 
         project.getExtensions().create("resourceMonitor", ResourceMonitorExtension.class);
         AppExtension appExtension = project.getExtensions().findByType(AppExtension.class);
-        project.afterEvaluate(new FcComponentReadAction());
-        appExtension.registerTransform(new FcGetResourceTransform(project));
+        project.afterEvaluate(new FcComponentReadAction(DEFAULT_APPLICATION));
+        appExtension.registerTransform(new FcGetResourceTransform(project, DEFAULT_PROXY_RESOURCE));
     }
 }

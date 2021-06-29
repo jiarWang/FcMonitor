@@ -19,16 +19,10 @@ import org.jdom2.output.XMLOutputter;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import groovy.util.Node;
-import groovy.util.NodeList;
-import groovy.util.XmlParser;
-
-import static com.student0.resourcemonitor.config.ResourceMonitorExtension.DEFAULT_APPLICATION;
 
 /**
  * @createDate: 6/27/21
@@ -36,6 +30,11 @@ import static com.student0.resourcemonitor.config.ResourceMonitorExtension.DEFAU
  * @description:
  */
 public class FcComponentReadAction implements Action<Project> {
+    private String mDefaultApplication;
+
+    public FcComponentReadAction(String defaultApplication) {
+        mDefaultApplication = defaultApplication;
+    }
 
     @Override
     public void execute(Project project) {
@@ -53,7 +52,6 @@ public class FcComponentReadAction implements Action<Project> {
                         String manifest = file.getPath() + "/AndroidManifest.xml";
                         File manifestFile = new File(manifest);
                         if (!manifestFile.exists()) continue;
-//                        NodeManager.Instance.setAllContext(findContextClass(manifestFile));
                         NodeManager.Instance.setAllContext(modifyXMLByJDOM(manifestFile));
                     }
                 }
@@ -61,49 +59,14 @@ public class FcComponentReadAction implements Action<Project> {
         }
     }
 
-    public static String capitalize(String str) {
+    private static String capitalize(String str) {
         if (str == null || str.isEmpty()) {
             return str;
         }
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
-    public Set<String> findContextClass(File file) {
-        Set<String> contextSet = new HashSet<>();
-        try {
-            Node parse = new XmlParser(false, false).parse(file);
-            Object application = parse.get("application");
-            if (application instanceof NodeList) {
-                for (Object o : ((NodeList) application)) {
-                    if (o instanceof Node) {
-                        Object attribute = ((Node) o).attribute("android:name");
-                        if (attribute != null) {
-                            contextSet.add(attribute.toString());
-                        } else {
-                            contextSet.add(DEFAULT_APPLICATION);
-                        }
-                        if (((Node) o).value() instanceof NodeList) {
-                            NodeList componentList = (NodeList) ((Node) o).value();
-                            for (Object c : componentList) {
-                                Node component = (Node) c;
-                                String compName = component.name().toString();
-                                if ("activity".equals(compName) || "service".equals(compName)) {
-                                    String compClassName = component.attribute("android:name").toString();
-                                    contextSet.add(compClassName);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return contextSet;
-    }
-
-    public Set<String> modifyXMLByJDOM(File path) {
+    private Set<String> modifyXMLByJDOM(File path) {
         Set<String> contextSet = new HashSet<>();
         try {
             SAXBuilder builder = new SAXBuilder();
@@ -113,12 +76,12 @@ public class FcComponentReadAction implements Action<Project> {
             if (application.getAttribute("android:name") == null) {
                 Attribute attrName = new Attribute(
                         "name",
-                        DEFAULT_APPLICATION,
+                        mDefaultApplication,
                         AttributeType.CDATA,
                         androidNamespace
                 );
                 application.setAttribute(attrName);
-                contextSet.add(DEFAULT_APPLICATION);
+                contextSet.add(mDefaultApplication);
             } else {
                 String applicationName = application.getAttribute("name", androidNamespace).getValue();
                 contextSet.add(applicationName);

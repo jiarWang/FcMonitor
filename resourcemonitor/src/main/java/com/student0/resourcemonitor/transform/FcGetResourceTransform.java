@@ -46,14 +46,19 @@ public class FcGetResourceTransform extends Transform {
     private Project mProject;
     private String mCustomResourceName;
 
-    public FcGetResourceTransform(Project project) {
+    public FcGetResourceTransform(Project project, String defaultResourceClass) {
         mProject = project;
+        mCustomResourceName = defaultResourceClass;
     }
 
     @Override
     public void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
-        //拿到所有的class文件
-        mCustomResourceName = mProject.getExtensions().findByType(ResourceMonitorExtension.class).className;
+        //设置
+        String resourceName = mProject.getExtensions().findByType(ResourceMonitorExtension.class).className;
+        if (resourceName != null && !resourceName.isEmpty()){
+            mCustomResourceName = resourceName;
+        }
+
         Collection<TransformInput> inputs = transformInvocation.getInputs();
         TransformOutputProvider outputProvider = transformInvocation.getOutputProvider();
         if (outputProvider != null) {
