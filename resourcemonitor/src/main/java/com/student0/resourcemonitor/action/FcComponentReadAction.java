@@ -73,7 +73,7 @@ public class FcComponentReadAction implements Action<Project> {
             Document doc = builder.build(path);
             Element application = doc.getRootElement().getChild("application");
             Namespace androidNamespace = Namespace.getNamespace("android", "http://schemas.android.com/apk/res/android");
-            if (application.getAttribute("android:name") == null) {
+            if (application.getAttribute("name", androidNamespace) == null) {
                 Attribute attrName = new Attribute(
                         "name",
                         mDefaultApplication,
