@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.student0.resourcemonitor'
+apply plugin: 'com.student0.resourcemonitor'
 
 android {
     compileSdkVersion 30
@@ -22,15 +22,15 @@ android {
         }
     }
 }
-
+resourceMonitor {
+    className "com.student0.www.DemoResource"
+}
 
 repositories {
     jcenter()
     google()
     mavenCentral()
-    maven {
-        url uri('../repo')
-    }
+    maven { url 'https://jitpack.io' }
 }
 
 buildscript {
@@ -38,15 +38,11 @@ buildscript {
         jcenter()
         google()
         mavenCentral()
-        maven {
-            url uri('../repo')
-        }
+        maven { url 'https://jitpack.io' }
     }
 
     dependencies {
-//        classpath 'com.student0.www:resourcemonitor:1.0.0-release'
-
-
+        classpath "com.github.jiarWang.FcMonitor:resourcemonitor:1.0.2"
     }
 }
 
@@ -61,5 +57,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-//    implementation 'com.student0.www:monitor:1.0.0'
+    implementation 'com.github.jiarWang.FcMonitor:monitor:1.0.2'
 }
