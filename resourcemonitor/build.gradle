@@ -1,5 +1,7 @@
 apply plugin: 'java'
-apply plugin: 'maven'
+//apply plugin: 'maven'
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.student0.www'
 
 buildscript {
     repositories {
@@ -11,24 +13,24 @@ def version = '1.0.0-release' // 指定版本
 def artifactId='resourcemonitor'
 sourceCompatibility = 1.8
 // 上传Task，Gradle会生成并上传pom.xml文件。
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            pom.groupId = group
-            pom.artifactId = artifactId
-            pom.version = version
-            repository(url: uri('../repo'))
-
-            //构造项目的Pom文件
-            pom.project {
-                name = project.name
-                packaging = 'jar'
-                description = 'description'
-            }
-        }
-
-    }
-}
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            pom.groupId = group
+//            pom.artifactId = artifactId
+//            pom.version = version
+//            repository(url: uri('../repo'))
+//
+//            //构造项目的Pom文件
+//            pom.project {
+//                name = project.name
+//                packaging = 'jar'
+//                description = 'description'
+//            }
+//        }
+//
+//    }
+//}
 
 repositories {
     jcenter()

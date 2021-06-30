@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.student0.resourcemonitor'
+//apply plugin: 'com.student0.resourcemonitor'
 
 android {
     compileSdkVersion 30
@@ -44,7 +44,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.student0.www:resourcemonitor:1.0.0-release'
+//        classpath 'com.student0.www:resourcemonitor:1.0.0-release'
+
+
     }
 }
 
@@ -59,5 +61,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'com.student0.www:monitor:1.0.0'
+//    implementation 'com.student0.www:monitor:1.0.0'
 }
